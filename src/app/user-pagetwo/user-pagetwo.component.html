@@ -7,17 +7,31 @@
      </h1>
    </div>
    <div class="row bg-dark mt-2">
-     <button class="text-white p-2 col-1 bg-primary mx-3 rounded border-primary " data-bs-toggle="modal" data-bs-target="#addModal" (click)="addUser()">
+     <button class="text-white p-2 col-1 bg-info mx-3 rounded border-info " data-bs-toggle="modal" data-bs-target="#addModal" (click)="addUser()">
        Add 
      </button>
-     <select class="form-select" aria-label="Dolgozók per oldal" [(ngModel)]="usersPerPage" (change)="nextPage()">
+     <!-- <select class="form-select" aria-label="Dolgozók per oldal" [(ngModel)]="usersPerPage" (change)="nextPage()">
        <option *ngFor="let pageSize of pageSizes" [value]="pageSize">{{pageSize}}</option>
      </select>
    
      <div class="d-flex align-items-center">
        <button class="text-white p-2 col-1 bg-success mx-3 rounded border-success mt-2" [disabled]="currentPage === 1" (click)="changePage(-1)">Back</button>
-       <button class="text-white p-2 col-1 bg-success mx-3 rounded border-success  mt-2" [disabled]="currentPage === totalPages" (click)="changePage(1)" >Next</button>
-     </div>
+       <button class="text-white p-2 col-1 bg-success mx-3 rounded border-success  mt-2" [disabled]="currentPage === totalPages" (click)="changePage(1)">Next</button> -->
+     <!-- </div> -->
+     <select class="form-select" aria-label="Dolgozók per oldal" [(ngModel)]="usersPerPage" (change)="getSecondUsers()">
+        <option *ngFor="let pageSize of pageSizes" [value]="pageSize">{{pageSize}}</option>
+      </select>
+      
+      <button class="text-white p-2 col-1 bg-success mx-3 rounded border-success mt-2" [disabled]="currentPage === 1" (click)="changePage(-1)">Back</button>
+      <button class="text-white p-2 col-1 bg-success mx-3 rounded border-success  mt-2" [disabled]="currentPage === totalPages" (click)="changePage(1)">Next</button>
+      
+ 
+     <!-- <h1 style="--bs-bg-opacity: .5;" class="bg-success display-6 text-center text-white my-3 py-1 rounded" *ngIf="message">{{ message }}</h1>
+   
+     <h1 style="--bs-bg-opacity: .5;" class="bg-danger display-6 text-center text-white my-3 py-1 rounded"  *ngIf="errmess?.email">{{errmess.email}}</h1>
+     <h1 style="--bs-bg-opacity: .5;" class="bg-danger display-6 text-center text-white my-3 py-1 rounded"  *ngIf="errmess?.first_name">{{errmess.first_name}}</h1>
+     <h1 style="--bs-bg-opacity: .5;" class="bg-danger display-6 text-center text-white my-3 py-1 rounded"  *ngIf="errmess?.last_name">{{errmess.last_name}}</h1>
+     <h1 style="--bs-bg-opacity: .5;" class="bg-danger display-6 text-center text-white my-3 py-1 rounded"  *ngIf="errmess?.avatar">{{errmess.avatar}}</h1> -->
         
    </div>
    <table class="table table-striped table-dark mt-2">
@@ -31,13 +45,12 @@
          </tr>
        </thead>
        <tbody>
-         <tr class="col" *ngFor="let user of users"  >
+         <tr class="col" *ngFor="let user of users">
            <th>{{user.id}}</th>
            <td>{{user.email}}</td>
            <td>{{user.first_name}}</td>
            <td>{{user.last_name}}</td>
-           <!-- <td>{{user.avatar}}</td> -->
-           <td><img [src]="user.avatar"></td>
+           <td>{{user.avatar}}</td>
            <td>
              <div class="row mx-2">
                <button class="text-dark bg-warning p-2 rounded border-warning" (click)="editUser(user)" data-bs-toggle="modal" data-bs-target="#modifyModal">
@@ -47,16 +60,8 @@
            </td>
            <td>
              <div class="row mx-2">
-               <button class="text-white bg-danger p-2 rounded border-danger" (click)="deleteUser(user.id)">
+               <button class="text-white bg-danger p-2 rounded border-danger" (click)="deleteSecondUser(user.id)">
                  Delete 
-               </button>
-             </div>
-           </td>
-          
-           <td>
-             <div class="row mx-2">
-               <button class="text-white bg-info p-2 rounded border-info" (click)="detailUser(user)" data-bs-toggle="modal" data-bs-target="#detailModal">
-                 Detail
                </button>
              </div>
            </td>
@@ -75,32 +80,32 @@
              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
            </div>
            <div class="modal-body">
-              
+   
+            
              <form [formGroup]="userForm">
                <div class="mb-3">
-                 <label for="name" class="form-label">Name</label>
-                 <input type="text" class="form-control" id="name"
-                 placeholder="expl: " formControlName="name" >  
-                 <!-- <div class="invalid-feedback" *ngIf="userForm.get('name')?.hasError('required')">
-                  Name is required.
-                </div>
-                <div class="invalid-feedback" *ngIf="userForm.get('name')?.hasError('invalidName')">
-                  Invalid name. Only alphanumeric characters are allowed.
-                </div>
-                <div class="invalid-feedback" *ngIf="userForm.get('name')?.hasError('shortName')">
-                  Name must be at least 5 characters long.
-                </div>
-                <div class="invalid-feedback" *ngIf="userForm.get('name')?.hasError('invalidFirstCharacter')">
-                  The first character of the name must be a letter.
-                </div>                 -->
+                 <label for="email" class="form-label">Email</label>
+                 <input type="text" class="form-control" id="email"
+                 placeholder="expl:  B.Ödön@asd.com" formControlName="email">              
                </div>
                <div class="mb-3">
-                 <label for="job" class="form-label">Job</label>
-                 <input type="text" class="form-control" id="job"
-                 placeholder="expl:  Tok" formControlName="job" >            
+                 <label for="first_name" class="form-label">First Name</label>
+                 <input type="text" class="form-control" id="first_name"
+                 placeholder="expl:  Tok" formControlName="first_name">              
+               </div>
+               <div class="mb-3">
+                 <label for="last_name" class="form-label">Last Name</label>
+                 <input type="text" class="form-control" id="last_name"
+                 placeholder="expl:  Odon" formControlName="last_name">              
+               </div>
+               <div class="mb-3">
+                 <label for="avatar" class="form-label">Avatar</label>
+                 <input type="text" class="form-control" id="avatar"
+                 placeholder="expl:  " formControlName="avatar">              
                </div>
              </form>
-    
+   
+   
            </div>
            <div class="modal-footer">
              <button type="button" class="btn btn-secondary" 
@@ -161,47 +166,12 @@
                data-bs-dismiss="modal">Close</button>
                <button type="button" class="btn btn-primary"
                data-bs-dismiss="modal"
-               (click)="updateUser()">Save</button>
+               (click)="updateSecondUser()">Save</button>
              </div>
            </div>
          </div>
        </div>
-
-      <!-- User details Modal -->
-
-<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">User Detail</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body" *ngIf="selectedUser">
-        <form [formGroup]="detailForm">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" id="email" formControlName="email" readonly>
-          </div>
-          <div class="mb-3">
-            <label for="first_name" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="first_name" formControlName="first_name" readonly>
-          </div>
-          <div class="mb-3">
-            <label for="last_name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="last_name" formControlName="last_name" readonly>
-          </div>
-        </form>
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
+ 
      
      <footer class="justify-content-center">&copy; Borosfather</footer>
    </div>
